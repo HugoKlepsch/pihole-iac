@@ -1,0 +1,25 @@
+# More info at https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    # Not necessary because using host networking - this fixes client IP resolution
+    # ports:
+    #   # DNS Ports
+    #   - "53:53/tcp"
+    #   - "53:53/udp"
+    #   # Default HTTP Port
+    #   - "80:80/tcp"
+    #   - "443:443/tcp"
+    #   - "5380:5380/tcp"
+    #   - "53443:53443/tcp"
+    network_mode: host
+    environment:
+      TZ: ${TZONE}
+      # If using Docker's default `bridge` network setting the dns listening 
+      # mode should be set to 'all'.
+      FTLCONF_dns_listeningMode: 'all'
+    volumes:
+      # For persisting Pi-hole's databases and common configuration file
+      - './etc-pihole:/etc/pihole'
+    restart: unless-stopped

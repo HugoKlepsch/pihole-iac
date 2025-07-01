@@ -1,0 +1,4 @@
+.env.bash
+generated_config/*
+*.sw*
+etc-pihole/
