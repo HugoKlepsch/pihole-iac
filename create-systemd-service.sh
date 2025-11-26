@@ -46,11 +46,11 @@ User=root
 Group=docker
 WorkingDirectory=$(pwd)
 # Shutdown container (if running) when unit is started
-ExecStartPre=/bin/bash -c ". ${ENV_FILE}; $(which docker-compose) -f docker-compose.yml down"
+ExecStartPre=/bin/bash -c ". ${ENV_FILE}; $(which docker) compose -f docker-compose.yml down"
 # Start container when unit is started
-ExecStart=/bin/bash -c ". ${ENV_FILE}; $(which docker-compose) -f docker-compose.yml up"
+ExecStart=/bin/bash -c ". ${ENV_FILE}; $(which docker) compose -f docker-compose.yml up"
 # Stop container when unit is stopped
-ExecStop=/bin/bash -c ". ${ENV_FILE}; $(which docker-compose) -f docker-compose.yml down"
+ExecStop=/bin/bash -c ". ${ENV_FILE}; $(which docker) compose -f docker-compose.yml down"
 
 [Install]
 WantedBy=multi-user.target
