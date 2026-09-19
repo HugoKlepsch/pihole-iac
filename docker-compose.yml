@@ -16,9 +16,16 @@ services:
     network_mode: host
     environment:
       TZ: ${TZONE}
-      # If using Docker's default `bridge` network setting the dns listening 
-      # mode should be set to 'all'.
-      FTLCONF_dns_listeningMode: 'all'
+      # Per-deployment settings are set in .env.bash (see .env.bash.template).
+      # With host networking, 'all' answers DNS on every host interface: fine behind
+      # a home router, but an open resolver on a host with a public IP.
+      FTLCONF_dns_listeningMode: ${FTLCONF_dns_listeningMode:-all}
+      # Only passed to the container when set in .env.bash; otherwise Pi-hole's own
+      # setting applies. Settings passed as env vars are read-only in the web UI.
+      FTLCONF_dns_interface:
+      FTLCONF_webserver_port:
+      FTLCONF_ntp_ipv4_active:
+      FTLCONF_ntp_ipv6_active:
     volumes:
       # For persisting Pi-hole's databases and common configuration file
       - './etc-pihole:/etc/pihole'

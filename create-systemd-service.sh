@@ -31,6 +31,14 @@ mkdir -p "${GEN_DIR}"
 echo "Generated units are written to ${GEN_DIR}/ before installation"
 
 pihole_unit_name="${SERVICENAME}.service"
+
+# Optional extra units to require and start after, e.g. the VPN that creates the interface pihole binds to
+extra_deps=""
+if [[ -n "${SYSTEMD_REQUIRES:-}" ]]; then
+	extra_deps="After=${SYSTEMD_REQUIRES}
+Requires=${SYSTEMD_REQUIRES}"
+fi
+
 echo "Creating pihole systemd service... ${pihole_unit_name}"
 # Create systemd service file
 cat >"${GEN_DIR}/${pihole_unit_name}" <<EOF
@@ -38,6 +46,7 @@ cat >"${GEN_DIR}/${pihole_unit_name}" <<EOF
 Description=Run pihole in docker compose
 After=docker.service
 Requires=docker.service
+${extra_deps}
 
 [Service]
 RestartSec=10
